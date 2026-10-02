@@ -10,27 +10,31 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RecordingService : Service() {
- companion object { const val ACTION_START="START"; const val ACTION_STOP="STOP"; const val CHANNEL="recording"; const val ID=785 }
- private var recorder: MediaRecorder?=null
- override fun onCreate(){ super.onCreate(); createChannel() }
- override fun onStartCommand(intent:Intent?,flags:Int,startId:Int):Int { when(intent?.action){ ACTION_START->startRecording(); ACTION_STOP->stopRecording() }; return START_STICKY }
+ companion object { const val ACTION_START="START"; const val CHANNEL="recording"; const val ID=785 }
+ private var recorder:MediaRecorder?=null
+ private var stopping=false
+ override fun onCreate(){super.onCreate();createChannel()}
+ override fun onStartCommand(intent:Intent?,flags:Int,startId:Int):Int { if(intent?.action==ACTION_START) startRecording(); return START_NOT_STICKY }
  private fun startRecording(){
   if(recorder!=null)return
   val dir=File(filesDir,"recordings").apply{mkdirs()}
-  val stamp=SimpleDateFormat("yyyy-MM-dd_HH-mm-ss",Locale.getDefault()).format(Date())
-  val output=File(dir,"Grabacion_"+stamp+".m4a")
+  val output=File(dir,"Grabacion_"+SimpleDateFormat("yyyy-MM-dd_HH-mm-ss",Locale.getDefault()).format(Date())+".m4a")
   val r=if(Build.VERSION.SDK_INT>=31) MediaRecorder(this) else @Suppress("DEPRECATION") MediaRecorder()
   recorder=r.apply{setAudioSource(MediaRecorder.AudioSource.MIC);setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);setAudioEncoder(MediaRecorder.AudioEncoder.AAC);setAudioEncodingBitRate(128000);setAudioSamplingRate(44100);setOutputFile(output.absolutePath);prepare();start()}
-  startForeground(ID,notification("Grabando · puedes apagar la pantalla"))
   getSharedPreferences("state",MODE_PRIVATE).edit().putBoolean("recording",true).putLong("started",System.currentTimeMillis()).apply()
+  startForeground(ID,notification())
  }
- private fun stopRecording(){ recorder?.let{try{it.stop()}catch(_:Exception){};it.reset();it.release()};recorder=null;getSharedPreferences("state",MODE_PRIVATE).edit().putBoolean("recording",false).apply();stopForeground(STOP_FOREGROUND_REMOVE);stopSelf() }
- private fun notification(text:String):Notification{
-  val stop=Intent(this,RecordingService::class.java).setAction(ACTION_STOP)
-  val pi=PendingIntent.getService(this,1,stop,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-  return NotificationCompat.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_btn_speak_now).setContentTitle("GrabaTexto está grabando").setContentText(text).setOngoing(true).setOnlyAlertOnce(true).addAction(android.R.drawable.ic_media_pause,"Finalizar",pi).build()
+ private fun finishRecording(){
+  if(stopping)return;stopping=true
+  recorder?.let{r->try{r.stop()}catch(_:RuntimeException){};try{r.reset()}catch(_:Exception){};try{r.release()}catch(_:Exception){}};recorder=null
+  getSharedPreferences("state",MODE_PRIVATE).edit().putBoolean("recording",false).remove("started").apply()
+  stopForeground(STOP_FOREGROUND_REMOVE)
  }
- private fun createChannel(){if(Build.VERSION.SDK_INT>=26)getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel(CHANNEL,"Grabación en curso",NotificationManager.IMPORTANCE_LOW).apply{description="Mantiene activa la grabación en segundo plano"})}
- override fun onDestroy(){if(recorder!=null)stopRecording();super.onDestroy()}
+ private fun notification():Notification{
+  val open=PendingIntent.getActivity(this,2,Intent(this,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+  return NotificationCompat.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_btn_speak_now).setContentTitle("GrabaTexto está grabando").setContentText("Toca para volver y finalizar").setContentIntent(open).setOngoing(true).setOnlyAlertOnce(true).build()
+ }
+ private fun createChannel(){if(Build.VERSION.SDK_INT>=26)getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel(CHANNEL,"Grabación en curso",NotificationManager.IMPORTANCE_LOW))}
+ override fun onDestroy(){finishRecording();super.onDestroy()}
  override fun onBind(intent:Intent?):IBinder?=null
 }
