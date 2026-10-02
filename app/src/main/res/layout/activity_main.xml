@@ -14,8 +14,8 @@
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:padding="16dp" android:background="#FFFFFF" android:text="ℹ Todo se guarda localmente en este teléfono. Puedes minimizar la app o apagar la pantalla durante la grabación." android:textColor="#475569" android:textSize="14sp"/>
    </LinearLayout>
   </ScrollView>
-  <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
-   <LinearLayout android:id="@+id/recordingsScreen" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp" android:visibility="gone">
+  <ScrollView android:id="@+id/recordingsScroll" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:visibility="gone">
+   <LinearLayout android:id="@+id/recordingsScreen" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Grabaciones" android:textSize="25sp" android:textStyle="bold" android:textColor="#0F172A" android:paddingBottom="10dp"/>
     <LinearLayout android:id="@+id/recordingsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
    </LinearLayout>
