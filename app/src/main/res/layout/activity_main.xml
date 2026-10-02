@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#F4F7FB">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical"><ImageView android:layout_width="58dp" android:layout_height="58dp" android:src="@drawable/ic_logo"/><LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:paddingStart="12dp"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GrabaTexto" android:textSize="28sp" android:textStyle="bold" android:textColor="#0F172A"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Graba. Transcribe. Organiza." android:textColor="#64748B" android:textSize="14sp"/></LinearLayout></LinearLayout>
-<TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="34dp" android:gravity="center" android:text="Listo para grabar" android:textSize="17sp" android:textColor="#64748B"/>
-<TextView android:id="@+id/timer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center" android:text="00:00:00" android:textSize="48sp" android:textStyle="bold" android:textColor="#0F172A"/>
-<Button android:id="@+id/startButton" android:layout_width="match_parent" android:layout_height="62dp" android:layout_marginTop="24dp" android:text="●  GRABAR" android:textSize="18sp"/>
-<Button android:id="@+id/stopButton" android:layout_width="match_parent" android:layout_height="62dp" android:layout_marginTop="10dp" android:enabled="false" android:text="■  FINALIZAR" android:textSize="18sp"/>
-<TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:padding="16dp" android:background="#FFFFFF" android:text="ℹ  Puedes minimizar GrabaTexto o bloquear la pantalla. La notificación de Android confirma que la grabación continúa activa." android:textColor="#475569" android:textSize="14sp"/>
-<TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="26dp" android:text="Grabaciones recientes" android:textSize="22sp" android:textStyle="bold" android:textColor="#0F172A"/>
-<LinearLayout android:id="@+id/recordingsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="10dp"/>
-</LinearLayout></ScrollView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F4F7FB">
+ <LinearLayout android:layout_width="match_parent" android:layout_height="72dp" android:gravity="center_vertical" android:paddingHorizontal="20dp" android:background="#FFFFFF">
+  <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_logo"/>
+  <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:paddingStart="10dp"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GrabaTexto" android:textSize="24sp" android:textStyle="bold" android:textColor="#0F172A"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Graba. Transcribe. Organiza." android:textSize="12sp" android:textColor="#64748B"/></LinearLayout>
+  <Button android:id="@+id/apiButton" android:layout_width="54dp" android:layout_height="48dp" android:text="⚙" android:textSize="20sp"/>
+ </LinearLayout>
+ <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+  <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+   <LinearLayout android:id="@+id/homeScreen" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+    <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="30dp" android:gravity="center" android:text="Listo para grabar" android:textSize="17sp" android:textColor="#64748B"/>
+    <TextView android:id="@+id/timer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center" android:text="00:00:00" android:textSize="48sp" android:textStyle="bold" android:textColor="#0F172A"/>
+    <Button android:id="@+id/startButton" android:layout_width="match_parent" android:layout_height="64dp" android:layout_marginTop="28dp" android:text="●  GRABAR" android:textSize="18sp"/>
+    <Button android:id="@+id/stopButton" android:layout_width="match_parent" android:layout_height="64dp" android:layout_marginTop="10dp" android:enabled="false" android:text="■  FINALIZAR" android:textSize="18sp"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:padding="16dp" android:background="#FFFFFF" android:text="ℹ Puedes minimizar la app o apagar la pantalla mientras graba. Al finalizar, ve a Grabaciones para escuchar, transcribir y gestionar el audio." android:textColor="#475569" android:textSize="14sp"/>
+   </LinearLayout>
+  </ScrollView>
+  <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+   <LinearLayout android:id="@+id/recordingsScreen" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp" android:visibility="gone">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Grabaciones" android:textSize="25sp" android:textStyle="bold" android:textColor="#0F172A" android:paddingBottom="10dp"/>
+    <LinearLayout android:id="@+id/recordingsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+   </LinearLayout>
+  </ScrollView>
+ </FrameLayout>
+ <LinearLayout android:layout_width="match_parent" android:layout_height="68dp" android:orientation="horizontal" android:background="#FFFFFF" android:padding="7dp">
+  <Button android:id="@+id/homeTab" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="⌂  Inicio"/>
+  <Button android:id="@+id/recordingsTab" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="☷  Grabaciones"/>
+ </LinearLayout>
+</LinearLayout>
