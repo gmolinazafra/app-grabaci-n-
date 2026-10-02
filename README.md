@@ -20,3 +20,6 @@ Grabadora Android diseñada para seguir grabando al minimizar la aplicación o b
 
 ## Siguiente fase
 Transcripción posterior, texto editable y exportación/compartir.
+
+
+Build APK automático activado.
