@@ -26,7 +26,13 @@ class MainActivity:AppCompatActivity(){
  private fun ensurePermissionAndStart(){val p=mutableListOf(Manifest.permission.RECORD_AUDIO);if(Build.VERSION.SDK_INT>=33)p+=Manifest.permission.POST_NOTIFICATIONS;if(p.any{ContextCompat.checkSelfPermission(this,it)!=PackageManager.PERMISSION_GRANTED})ActivityCompat.requestPermissions(this,p.toTypedArray(),10)else startRecording()}
  override fun onRequestPermissionsResult(r:Int,p:Array<out String>,g:IntArray){super.onRequestPermissionsResult(r,p,g);if(r==10&&ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_GRANTED)startRecording()}
  private fun startRecording(){ContextCompat.startForegroundService(this,Intent(this,RecordingService::class.java).setAction(RecordingService.ACTION_START));Handler(Looper.getMainLooper()).postDelayed({refreshState()},250)}
- private fun stopRecording(){startService(Intent(this,RecordingService::class.java).setAction(RecordingService.ACTION_STOP));Handler(Looper.getMainLooper()).postDelayed({refreshState();refreshList()},600)}
+ private fun stopRecording(){
+  stop.isEnabled=false
+  status.text="Finalizando grabación…"
+  stopService(Intent(this,RecordingService::class.java))
+  getSharedPreferences("state",MODE_PRIVATE).edit().putBoolean("recording",false).remove("started").apply()
+  Handler(Looper.getMainLooper()).postDelayed({refreshState();refreshList();Toast.makeText(this,"Grabación guardada",Toast.LENGTH_SHORT).show()},500)
+ }
  private fun refreshState(){val s=getSharedPreferences("state",MODE_PRIVATE);val active=s.getBoolean("recording",false);start.isEnabled=!active;stop.isEnabled=active;status.text=if(active)"🔴 Grabando en segundo plano" else "Listo para grabar";if(active){val sec=(System.currentTimeMillis()-s.getLong("started",System.currentTimeMillis()))/1000;timer.text=String.format(Locale.getDefault(),"%02d:%02d:%02d",sec/3600,(sec%3600)/60,sec%60)}else timer.text="00:00:00"}
  private fun refreshList(){
   container.removeAllViews();val files=File(filesDir,"recordings").listFiles()?.sortedByDescending{it.lastModified()}?:emptyList()
