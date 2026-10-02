@@ -5,6 +5,8 @@ import android.media.MediaRecorder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
+import android.content.pm.ServiceInfo
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +24,7 @@ class RecordingService : Service() {
   val r=if(Build.VERSION.SDK_INT>=31) MediaRecorder(this) else @Suppress("DEPRECATION") MediaRecorder()
   recorder=r.apply{setAudioSource(MediaRecorder.AudioSource.MIC);setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);setAudioEncoder(MediaRecorder.AudioEncoder.AAC);setAudioEncodingBitRate(128000);setAudioSamplingRate(44100);setOutputFile(output.absolutePath);prepare();start()}
   getSharedPreferences("state",MODE_PRIVATE).edit().putBoolean("recording",true).putLong("started",System.currentTimeMillis()).apply()
-  startForeground(ID,notification())
+  ServiceCompat.startForeground(this,ID,notification(),if(Build.VERSION.SDK_INT>=30) ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE else 0)
  }
  private fun finishRecording(){
   if(stopping)return;stopping=true
