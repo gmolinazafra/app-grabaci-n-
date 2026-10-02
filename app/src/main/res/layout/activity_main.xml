@@ -21,7 +21,7 @@
    </LinearLayout>
   </ScrollView>
  </FrameLayout>
- <LinearLayout android:id="@+id/bottomBar" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="68dp" android:orientation="horizontal" android:background="#FFFFFF" android:padding="7dp">
+ <LinearLayout android:id="@+id/bottomBar" android:layout_width="match_parent" android:layout_height="68dp" android:orientation="horizontal" android:background="#FFFFFF" android:paddingHorizontal="7dp" android:paddingTop="7dp" android:paddingBottom="7dp">
   <Button android:id="@+id/homeTab" android:layout_width="0dp" android:layout_height="54dp" android:layout_weight="1" android:text="⌂  Inicio"/>
   <Button android:id="@+id/recordingsTab" android:layout_width="0dp" android:layout_height="54dp" android:layout_weight="1" android:text="☷  Grabaciones"/>
  </LinearLayout>
