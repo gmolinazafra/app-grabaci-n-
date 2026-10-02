@@ -22,7 +22,7 @@ class MainActivity:AppCompatActivity(){
  private val handler=Handler(Looper.getMainLooper());private var player:MediaPlayer?=null
  private val tick=object:Runnable{override fun run(){refreshState();handler.postDelayed(this,500)}}
  override fun onCreate(b:Bundle?){super.onCreate(b);setContentView(R.layout.activity_main)
-  val bottom=findViewById<View>(R.id.bottomBar);ViewCompat.setOnApplyWindowInsetsListener(bottom){v,i->val nav=i.getInsets(WindowInsetsCompat.Type.navigationBars());v.setPadding(v.paddingLeft,v.paddingTop,v.paddingRight,nav.bottom+dp(7));i};ViewCompat.requestApplyInsets(bottom)
+  val root=findViewById<View>(R.id.root);ViewCompat.setOnApplyWindowInsetsListener(root){v,i->val bars=i.getInsets(WindowInsetsCompat.Type.systemBars());v.setPadding(bars.left,bars.top,bars.right,bars.bottom);i};ViewCompat.requestApplyInsets(root)
   status=findViewById(R.id.status);timer=findViewById(R.id.timer);start=findViewById(R.id.startButton);stop=findViewById(R.id.stopButton);container=findViewById(R.id.recordingsContainer);home=findViewById(R.id.homeScreen);recordings=findViewById(R.id.recordingsScreen);recordingsScroll=findViewById(R.id.recordingsScroll)
   findViewById<Button>(R.id.homeTab).setOnClickListener{home.visibility=View.VISIBLE;recordingsScroll.visibility=View.GONE};findViewById<Button>(R.id.recordingsTab).setOnClickListener{home.visibility=View.GONE;recordingsScroll.visibility=View.VISIBLE;refreshList()}
   start.setOnClickListener{ status.text="✓ BOTÓN PULSADO"; Toast.makeText(this,"Botón GRABAR pulsado",Toast.LENGTH_SHORT).show(); begin() };stop.setOnClickListener{finishRecording()};refreshList()
