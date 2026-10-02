@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>GrabaTexto</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+<header><div class="logo">🎙️</div><div><h1>GrabaTexto</h1><p>Graba tu voz y pásala a texto</p></div></header>
+<section class="card recorder">
+<div id="status" class="status"><span class="dot"></span><span>Listo para grabar</span></div>
+<div id="timer" class="timer">00:00</div>
+<div class="controls">
+<button id="record" class="primary" aria-label="Grabar"><span>●</span> Grabar</button>
+<button id="pause" class="secondary" disabled>⏸ Pausar</button>
+<button id="stop" class="danger" disabled>■ Finalizar</button>
+</div>
+<audio id="audio" controls hidden></audio>
+</section>
+<section class="card">
+<div class="section-head"><h2>Transcripción</h2><span id="words">0 palabras</span></div>
+<textarea id="text" placeholder="La transcripción aparecerá aquí mientras hablas..."></textarea>
+<div class="actions"><button id="copy">📋 Copiar texto</button><button id="downloadText">⬇️ Descargar .txt</button><button id="clear">🗑️ Limpiar</button></div>
+</section>
+<p class="privacy">🔒 El audio permanece en tu dispositivo. La transcripción del navegador puede usar el servicio de reconocimiento de voz del dispositivo/navegador.</p>
+</main>
+<div id="toast"></div><script src="app.js"></script>
+</body></html>
